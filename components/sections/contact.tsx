@@ -29,34 +29,37 @@ export function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatusMessage(null);
+
+    if (!formData.serviceNeeded) {
+      setStatusMessage("Please select a service needed.");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
+    const whatsappNumber = "916302543764";
+    const message = [
+      "Hello Arohaa Digital Solutions,",
+      "",
+      "New Business Inquiry:",
+      `Name: ${formData.name}`,
+      `Business Name: ${formData.businessName}`,
+      `Email: ${formData.email}`,
+      `Service Needed: ${formData.serviceNeeded}`,
+      "",
+      "Message:",
+      formData.message
+    ].join("\n");
 
-      const result = (await response.json()) as { error?: string };
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 
-      if (!response.ok) {
-        setStatusMessage(result.error ?? "Unable to submit. Please try again.");
-        return;
-      }
-
-      setFormData(initialState);
-      setStatusMessage("Thanks. Your details have been sent successfully.");
-    } catch {
-      setStatusMessage("Unable to submit. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    setFormData(initialState);
+    setStatusMessage("Opening WhatsApp with your details.");
+    setIsSubmitting(false);
   }
 
   return (
@@ -143,7 +146,7 @@ export function ContactSection() {
             </div>
 
             <Button type="submit" size="lg" className="mt-6 w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : "Start Your Business"}
+              {isSubmitting ? "Opening..." : "Start Your Business"}
             </Button>
             {statusMessage ? <p className="mt-3 text-sm text-white/80">{statusMessage}</p> : null}
           </form>
