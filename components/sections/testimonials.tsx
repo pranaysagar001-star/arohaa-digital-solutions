@@ -40,7 +40,7 @@ export function TestimonialsSection() {
           title="Trusted by growth-focused business leaders"
         />
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {testimonials.map((item, index) => (
             <motion.blockquote
               key={item.name}
