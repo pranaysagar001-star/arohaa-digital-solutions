@@ -50,7 +50,7 @@ export function TestimonialsSection() {
               transition={{ delay: index * 0.1 }}
               className="glass-card rounded-2xl p-6"
             >
-              <p className="text-sm leading-relaxed text-white/80">"{item.quote}"</p>
+              <p className="text-sm leading-relaxed text-white/80">{item.quote}</p>
               <footer className="mt-6 border-t border-white/10 pt-4">
                 <p className="font-medium text-white">{item.name}</p>
                 <p className="text-xs uppercase tracking-[0.12em] text-white/55">{item.role}</p>
